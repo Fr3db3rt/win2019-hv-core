@@ -1,3 +1,5 @@
+@echo off
+
 # Dialog
 # https://www.educba.com/powershell-prompt-for-input/
 #
@@ -58,8 +60,19 @@ Rename-Computer -NewName $computername
 
 # 1st reboot
 # 
-# Download Windows updates
-# Install Windows updates
+# Download and install Windows updates
+color 17
+for /F "tokens=3* delims= " %%A IN ('REG QUERY "HKCU\Control Panel\International" /v LocaleName') do set language=%%A
+REM Default language script is en-US
+if not exist %windir%\system32\%language%\sconfig.vbs set language=en-US
+pushd %~dp0
+cd %windir%\system32\%language%
+cscript sconfig.vbs
+popd
+color
+
+
+
 # 2nd reboot
 
 # Check MS Updates
